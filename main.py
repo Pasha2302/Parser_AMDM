@@ -115,7 +115,6 @@ if __name__ == '__main__':
     session: aiohttp.client.ClientSession = loop.run_until_complete(aio_sess.create_session())
 
     try:
-        # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         loop.run_until_complete(main())
     except KeyboardInterrupt:
         pass
