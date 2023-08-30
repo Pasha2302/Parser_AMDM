@@ -104,6 +104,7 @@ async def main():
 
 
 if __name__ == '__main__':
+    # https://amdm.ru/
     if not os.path.exists('Html_Performers'):
         os.makedirs('Html_Performers')
     if not os.path.exists('Сhords_DB'):
