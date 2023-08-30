@@ -4,3 +4,4 @@ Chords_DB/
 *.html
 *.txt
 *.json
+__pycache__/
