@@ -121,4 +121,4 @@ if __name__ == '__main__':
     finally:
         loop.run_until_complete(close_func())
         loop.close()
-        time.sleep(.45)
+        time.sleep(.46)
