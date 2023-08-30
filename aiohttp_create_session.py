@@ -2,7 +2,7 @@ import aiohttp
 
 
 class AiohttpSession:
-    def __init__(self, limit=3, ssl=False, total=320, sock_connect=160, sock_read=160, trust_env=True):
+    def __init__(self, limit=10, ssl=False, total=320, sock_connect=160, sock_read=160, trust_env=True):
         self.limit = limit
         self.ssl = ssl
         self.total = total

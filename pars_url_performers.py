@@ -24,22 +24,15 @@ def get_url_perf():
         text_html = rwf.download_txt_data(path_file=path_data)
         soup = BS(text_html, 'lxml')
         data_name_url = [
-            {"name": url.text.strip(),"url": url.get('href')} for url in soup.find_all("a", attrs={"class": "artist"})
+            {"name": url.text.strip(), "url": url.get('href')} for url in soup.find_all("a", attrs={"class": "artist"})
         ]
         list_datas.extend(data_name_url)
 
     new_file_len = len(list_datas)
-    if os.path.isfile('Performers_Data.json'):
-        previous_file_len = len(rwf.download_json_data(path_file='Performers_Data.json'))
-        if new_file_len > previous_file_len:
-            if os.path.isfile('stop_index_url_songs.txt'):
-                os.remove('stop_index_url_songs.txt')
-            print("\n\nПоявились новые исполнители...")
-
     rwf.save_json_data(json_data=list_datas, path_file='Performers_Data.json')
     print('==' * 40)
     print(f"Всего исполнителей: {new_file_len}")
 
 
-if __name__  == '__main__':
+if __name__ == '__main__':
     get_url_perf()

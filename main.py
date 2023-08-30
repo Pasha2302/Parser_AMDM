@@ -1,6 +1,3 @@
-import reading_writing_files as rwf
-from pathlib import Path
-import re
 import os
 import time
 import asyncio
@@ -12,8 +9,10 @@ import pars_url_performers as pup
 import url_songs
 import data_chords_block as dcb
 import working_with_the_database as working_db
+import reading_writing_files as rwf
 
 aio_sess = acs.AiohttpSession()
+path_intermediate_state = 'intermediate_state.txt'
 
 
 async def close_func():
@@ -45,46 +44,65 @@ async def create_a_task_request(request_data):
 
 
 async def main():
+    name_table_songs = 'Songs_Data'
+    name_table_main_categories = 'Songs_Data_Main_Categories'
+    if not os.path.isfile(path_intermediate_state):
+        intermediate_state = '0'
+        rwf.save_txt_data(data_txt='0', path_file=path_intermediate_state)
+    else:
+        intermediate_state = rwf.download_txt_data(path_file=path_intermediate_state).strip()
     check_index_main = 0
-    count_slice = 50
-
+    count_slice = 25
+    print(f"{intermediate_state=}")
+    # -------------------------------------------------------------------
+    # Запустить цикл сбора ссылок на исполнителей и их песни, с последующей проверкой ссылок песен на наличие в базе.
+    # Если ссылки на песню нет в базе, она добавляется.
     if not os.path.isfile('Performers_Data.json'):
         await hp.start_get_html_performers(session)
         pup.get_url_perf()
 
-    await url_songs.start_get_url_songs(session)
-    # -------------------------------------------------------------------
+    if intermediate_state == '0':
+        await url_songs.start_get_url_songs(session)
 
-    request_data = working_db.get_data_db_lyrics_chords_is_none()
-    if not request_data:
-        print("Все Аккорды Найдены...")
-        return 0
+    intermediate_state = '1'
+    rwf.save_txt_data(data_txt=intermediate_state, path_file=path_intermediate_state)
 
-    count_total_data = len(request_data)
-    print("\n\n<<================= Идут запросы на получение Аккордов... =================>>")
-    for data in split_list(request_data, count_slice):
-        res, exception_check = await create_a_task_request(request_data=data)
+    # ----------------------------------------------------------------------------------------------
 
-        if exception_check:
-            print('\nОшибки:')
-            print(exception_check)
-            break
+    for name_t in [name_table_main_categories, name_table_songs]:
+        request_data = working_db.get_data_db_lyrics_chords_is_none(name_table=name_t)
+        if not request_data:
+            print(f"\nПо таблице [{name_t}] Все Аккорды Найдены ...")
+            continue
 
-        if res:
-            print('\nДанные получены')
-            working_db.add_data_lyrics_chords(res)
+        count_total_data = len(request_data)
+        print(f"\n\n<<================= Таблица {name_t}. Идут запросы на получение Аккордов... =================>>")
+        for data in split_list(request_data, count_slice):
+            res, exception_check = await create_a_task_request(request_data=data)
 
-        check_index_main += len(data)
-        print(f"Выполнено {check_index_main} из {count_total_data}")
-        print('==' * 40)
-        break
+            if exception_check:
+                print('\nОшибки:')
+                print(exception_check)
+                break
 
+            if res:
+                print('\nДанные получены')
+                working_db.add_data_lyrics_chords(res, name_table=name_t)
+
+            check_index_main += len(data)
+            print(f"Выполнено {check_index_main} из {count_total_data}")
+            print('==' * 40)
+
+    # =================================================================================================================
+    if os.path.isfile('Performers_Data.json'):
+        os.remove('Performers_Data.json')
+    intermediate_state = '0'
+    rwf.save_txt_data(data_txt=intermediate_state, path_file=path_intermediate_state)
     await session.close()
     time.sleep(.25)
+    print("\n\n<<================= Программа Завершена... =================>>")
 
 
-# Html_Performers
-# Сhords_DB
 if __name__ == '__main__':
     if not os.path.exists('Html_Performers'):
         os.makedirs('Html_Performers')
@@ -102,4 +120,4 @@ if __name__ == '__main__':
     finally:
         loop.run_until_complete(close_func())
         loop.close()
-        print("\n\n<<================= Программа Завершена... =================>>")
+        time.sleep(.45)

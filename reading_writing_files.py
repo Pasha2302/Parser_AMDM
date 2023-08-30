@@ -1,7 +1,7 @@
 import json
 import os
-import openpyxl.worksheet.worksheet
-from openpyxl import load_workbook
+# import openpyxl.worksheet.worksheet
+# from openpyxl import load_workbook
 
 
 def save_txt_data(data_txt, path_file):
@@ -43,8 +43,8 @@ def download_json_data(path_file) -> list[dict] | dict:
         return json.load(f)
 
 
-def download_xlsx_data(path_file) -> iter:
-    wb = load_workbook(path_file)
-    sheet: openpyxl.worksheet.worksheet.Worksheet = wb.active
-    row_generator = sheet.iter_rows(min_row=0, values_only=True)
-    return row_generator
+# def download_xlsx_data(path_file) -> iter:
+#     wb = load_workbook(path_file)
+#     sheet: openpyxl.worksheet.worksheet.Worksheet = wb.active
+#     row_generator = sheet.iter_rows(min_row=0, values_only=True)
+#     return row_generator
