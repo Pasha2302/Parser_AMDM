@@ -108,8 +108,8 @@ if __name__ == '__main__':
     # https://amdm.ru/
     if not os.path.exists('Html_Performers'):
         os.makedirs('Html_Performers')
-    if not os.path.exists('Сhords_DB'):
-        os.makedirs('Сhords_DB')
+    if not os.path.exists('Chords_DB'):
+        os.makedirs('Chords_DB')
 
     loop = asyncio.new_event_loop()
     session: aiohttp.client.ClientSession = loop.run_until_complete(aio_sess.create_session())

@@ -72,9 +72,9 @@ async def get_html_performers(session: aiohttp.client.ClientSession, url, path_f
             break
 
         except Exception as err1:
-            print('\n[30] err1', err1)
+            print('\n[75] get_html_performers() err1:', err1)
             if count_err > 4:
-                raise TypeError({'[32] ERROR': err1})
+                raise TypeError({'[77] ERROR': err1})
             count_err += 1
             await asyncio.sleep(6)
             continue

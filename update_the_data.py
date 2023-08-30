@@ -1,7 +1,7 @@
 from pathlib import Path
 import sqlite3
 
-path_db = Path("Сhords_DB", "chords.db")
+path_db = Path("Chords_DB", "chords.db")
 
 
 def update_data():

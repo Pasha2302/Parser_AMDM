@@ -7,7 +7,7 @@ import colorama  # pip install colorama
 from colorama import Fore, Style
 colorama.init()
 
-path_db = Path("Сhords_DB", "chords.db")
+path_db = Path("Chords_DB", "chords.db")
 
 
 def create_table_songs_and_add_data(data_list, name_table='Songs_Data'):
