@@ -17,7 +17,9 @@ def split_list(lst, n):
 
 
 async def get_url_songs(session: aiohttp.client.ClientSession, performer_data):
+    tags_url_song = None
     count_err = 0
+    count_no_block_songs = 0
     performer_data['data_songs'] = []
 
     while True:
@@ -39,15 +41,15 @@ async def get_url_songs(session: aiohttp.client.ClientSession, performer_data):
                 tags_url_song = block_songs.find_all("a", attrs={"class": "g-link"})
             except Exception as err_html:
                 print('\n', err_html)
-                rwf.save_txt_data(data_txt=response_text, path_file='No_block_songs.html')
-                break
+                count_no_block_songs += 1
+                if count_no_block_songs == 3:
+                    rwf.save_txt_data(data_txt=response_text, path_file='No_block_songs.html')
+                    break
+                await asyncio.sleep(randint(2, 6))
 
             if tags_url_song:
                 performer_data['data_songs'] = get_unique_songs(block_songs)
-                #
-                # performer_data['data_songs'] = [
-                #    {"title": link_song.text.strip(), "url_song": link_song.get('href')} for link_song in tags_url_song
-                # ]
+
             break
 
         except Exception as err1:

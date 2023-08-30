@@ -104,6 +104,7 @@ async def main():
 
 
 if __name__ == '__main__':
+    # pip freeze > requirements.txt
     # https://amdm.ru/
     if not os.path.exists('Html_Performers'):
         os.makedirs('Html_Performers')
