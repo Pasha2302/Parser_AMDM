@@ -9,6 +9,11 @@ def save_txt_data(data_txt, path_file):
         f.write(str(data_txt))
 
 
+def save_txt_data_add(data_txt, path_file):
+    with open(path_file, 'a', encoding='utf-8') as f:
+        f.write(str(data_txt) + '\n')
+
+
 def download_txt_data(path_file):
     with open(path_file, encoding='utf-8') as f:
         return f.read()

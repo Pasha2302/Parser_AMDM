@@ -40,8 +40,10 @@ async def get_url_songs(session: aiohttp.client.ClientSession, performer_data):
             try:
                 tags_url_song = block_songs.find_all("a", attrs={"class": "g-link"})
             except Exception as err_html:
-                print('\n', err_html)
+                print('\n[43] get_url_songs:', err_html)
                 count_no_block_songs += 1
+                error_txt = f"[get_url_songs] count no block {count_no_block_songs}, Url Song: {performer_data['url']}"
+                rwf.save_txt_data_add(data_txt=error_txt, path_file="No_block_songs.txt")
                 if count_no_block_songs == 3:
                     rwf.save_txt_data(data_txt=response_text, path_file='No_block_songs.html')
                     break
@@ -53,7 +55,7 @@ async def get_url_songs(session: aiohttp.client.ClientSession, performer_data):
             break
 
         except Exception as err1:
-            print(f'\n[39] err1 <{count_err}>', err1)
+            print(f'\n[56] err1 <{count_err}>', err1)
             if count_err > 4:
                 print('>', end='')
                 raise TypeError({'[41] ERROR': err1})
