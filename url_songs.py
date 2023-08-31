@@ -125,8 +125,8 @@ async def start_get_url_songs(session):
                 working_db.create_table_songs_and_add_data(
                     data_list=list_data_songs_main_categories, name_table=name_table_main_categories
                 )
-
             working_db.create_table_songs_and_add_data(data_list=other_songs, name_table=name_table_songs)
+
             res.clear()
             other_songs.clear()
             list_data_songs_main_categories.clear()

@@ -10,6 +10,7 @@ import url_songs
 import data_chords_block as dcb
 import working_with_the_database as working_db
 import reading_writing_files as rwf
+from chord_check import start_chord_check
 
 aio_sess = acs.AiohttpSession()
 path_intermediate_state = 'intermediate_state.txt'
@@ -51,7 +52,7 @@ async def main():
         rwf.save_txt_data(data_txt='0', path_file=path_intermediate_state)
     else:
         intermediate_state = rwf.download_txt_data(path_file=path_intermediate_state).strip()
-    check_index_main = 0
+
     count_slice = 25
     print(f"{intermediate_state=}")
     # -------------------------------------------------------------------
@@ -70,6 +71,7 @@ async def main():
     # ----------------------------------------------------------------------------------------------
 
     for name_t in [name_table_main_categories, name_table_songs]:
+        check_index_main = 0
         request_data = working_db.get_data_db_lyrics_chords_is_none(name_table=name_t)
         if not request_data:
             print(f"\nПо таблице [{name_t}] Все Аккорды Найдены ...")
@@ -100,6 +102,12 @@ async def main():
     rwf.save_txt_data(data_txt=intermediate_state, path_file=path_intermediate_state)
     await session.close()
     time.sleep(.25)
+
+    try:
+        start_chord_check()
+    except Exception as error_check_chord:
+        print(f"\n\n !!! [109 Main] error_check_chord:\n{error_check_chord}")
+
     print("\n\n<<================= Программа Завершена... =================>>")
 
 
