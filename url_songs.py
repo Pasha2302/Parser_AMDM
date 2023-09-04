@@ -104,7 +104,7 @@ async def start_get_url_songs(session):
     request_data_slice = performers_data_list[check_index_songs:]
     count_total_data = len(performers_data_list)
 
-    print("\n\n<<================= Идут запросы на получение ссылок на аккорды песен... =================>>")
+    print("\n\n<<================= Идут запросы на получение ссылок песен... =================>>")
     for data in split_list(request_data_slice, count_slice):
         res, exception_check = await create_a_task_request(request_data=data, sess=session)
 

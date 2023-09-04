@@ -22,15 +22,16 @@ def create_table_songs_and_add_data(data_list, name_table='Songs_Data'):
         Performer TEXT,
         Lyrics_Chords TEXT,
         Link_to_Video TEXT,
-        Url_Performers TEXT
+        Url_Performers TEXT,
+        Check_Chords TEXT DEFAULT ''
         );
         """)
     conn.commit()
     for data in data_list:
         for data_song in data['data_songs']:
             try:
-                cur.execute(f"INSERT INTO {name_table} VALUES (?,?,?,?,?,?)", (
-                    data_song['url_song'], data_song['title'], data['name'], 'None', 'None', data['url']))
+                cur.execute(f"INSERT INTO {name_table} VALUES (?,?,?,?,?,?,?)", (
+                    data_song['url_song'], data_song['title'], data['name'], 'None', 'None', data['url'], ''))
                 count_link += 1
             except sqlite3.IntegrityError:
                 pass
