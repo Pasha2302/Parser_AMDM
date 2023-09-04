@@ -62,6 +62,18 @@ def add_data_lyrics_chords(data_list, name_table):
     conn.close()
 
 
+def replace_tags_in_lyrics(name_table):
+    conn = sqlite3.connect(database=path_db)
+    cur = conn.cursor()
+
+    print(f'{Fore.GREEN}Идет проверка тегов в текстах песен. Таблица: {name_table}.{Style.RESET_ALL}')
+    query = f"UPDATE {name_table} SET Lyrics_Chords = REPLACE(REPLACE(Lyrics_Chords, '<span>', '<b>'), '</span>', '</b>')"
+    cur.execute(query)
+
+    conn.commit()
+    conn.close()
+
+
 def get_data_db_lyrics_chords_is_none(name_table):
     conn = sqlite3.connect(database=path_db)
     cur = conn.cursor()

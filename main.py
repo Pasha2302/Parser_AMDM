@@ -15,6 +15,9 @@ from chord_check import start_chord_check
 aio_sess = acs.AiohttpSession()
 path_intermediate_state = 'intermediate_state.txt'
 
+name_table_songs = 'Songs_Data'
+name_table_main_categories = 'Songs_Data_Main_Categories'
+
 
 async def close_func():
     await session.close()
@@ -45,8 +48,6 @@ async def create_a_task_request(request_data):
 
 
 async def main():
-    name_table_songs = 'Songs_Data'
-    name_table_main_categories = 'Songs_Data_Main_Categories'
     if not os.path.isfile(path_intermediate_state):
         intermediate_state = '0'
         rwf.save_txt_data(data_txt='0', path_file=path_intermediate_state)
@@ -108,6 +109,9 @@ async def main():
     except Exception as error_check_chord:
         print(f"\n\n !!! [109 Main] error_check_chord:\n{error_check_chord}")
 
+    for name_table in [name_table_songs, name_table_main_categories]:
+        working_db.replace_tags_in_lyrics(name_table)
+
     print("\n\n<<================= Программа Завершена... =================>>")
 
 
@@ -123,6 +127,7 @@ if __name__ == '__main__':
     session: aiohttp.client.ClientSession = loop.run_until_complete(aio_sess.create_session())
 
     try:
+        pass
         loop.run_until_complete(main())
     except KeyboardInterrupt:
         pass

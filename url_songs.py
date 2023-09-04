@@ -88,9 +88,10 @@ async def create_a_task_request(request_data, sess):
 async def start_get_url_songs(session):
     name_table_songs = 'Songs_Data'
     name_table_main_categories = 'Songs_Data_Main_Categories'
-    main_categories: list[str] = [url_data['url_cat'] for url_data in rwf.download_json_data('main_categories.json')]
+    main_categories: list[str] = [url_data['url'] for url_data in rwf.download_json_data('main_categories.json')]
 
     main_categories.append('https://amdm.ru/akkordi/avtorskie_pesni/')
+
     print(f"\n{main_categories=}")
 
     if os.path.isfile('stop_index_url_songs.txt'):
@@ -115,6 +116,7 @@ async def start_get_url_songs(session):
             print('\nДанные получены')
             list_data_songs_main_categories = []
             other_songs = []
+
             for data_songs in res:
                 if data_songs['url'] in main_categories:
                     list_data_songs_main_categories.append(data_songs)

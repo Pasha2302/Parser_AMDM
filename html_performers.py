@@ -35,7 +35,7 @@ async def get_main_categories(session: aiohttp.client.ClientSession):
                 name_cat = data_tag_cat.find('a').text.strip()
                 url_cat = data_tag_cat.find('a').get('href').strip()
                 list_categories.append(
-                    {'name_cat': name_cat, 'url_cat': url_cat}
+                    {'name': name_cat, 'url': url_cat}
                 )
 
             rwf.save_json_data(json_data=list_categories, path_file=path_file)
@@ -106,3 +106,7 @@ async def start_get_html_performers(session):
 
     if res:
         print('\nДанные получены')
+
+
+async def start_get_main_categories(session):
+    await get_main_categories(session)
